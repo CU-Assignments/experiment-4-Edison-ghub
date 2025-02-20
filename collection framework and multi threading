@@ -1,0 +1,150 @@
+// 1. Employee Management System using ArrayList
+import java.util.*;
+
+class Employee {
+    int id;
+    String name;
+    double salary;
+
+    Employee(int id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+
+    public String toString() {
+        return "ID: " + id + ", Name: " + name + ", Salary: " + salary;
+    }
+}
+
+public class EmployeeManagement {
+    public static void main(String[] args) {
+        List<Employee> employees = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        
+        while (true) {
+            System.out.println("1. Add Employee  2. Update Employee  3. Remove Employee  4. Search Employee  5. Exit");
+            int choice = scanner.nextInt();
+            
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter ID, Name, Salary: ");
+                    employees.add(new Employee(scanner.nextInt(), scanner.next(), scanner.nextDouble()));
+                    break;
+                case 2:
+                    System.out.print("Enter ID to update: ");
+                    int updateId = scanner.nextInt();
+                    for (Employee emp : employees) {
+                        if (emp.id == updateId) {
+                            System.out.print("Enter new Name and Salary: ");
+                            emp.name = scanner.next();
+                            emp.salary = scanner.nextDouble();
+                        }
+                    }
+                    break;
+                case 3:
+                    System.out.print("Enter ID to remove: ");
+                    int removeId = scanner.nextInt();
+                    employees.removeIf(emp -> emp.id == removeId);
+                    break;
+                case 4:
+                    System.out.print("Enter ID to search: ");
+                    int searchId = scanner.nextInt();
+                    for (Employee emp : employees) {
+                        if (emp.id == searchId) System.out.println(emp);
+                    }
+                    break;
+                case 5:
+                    scanner.close();
+                    return;
+            }
+        }
+    }
+}
+
+
+
+
+// 2. Card Collection Finder using Collection Interface
+import java.util.*;
+
+class Card {
+    String symbol;
+    String value;
+
+    Card(String symbol, String value) {
+        this.symbol = symbol;
+        this.value = value;
+    }
+
+    public String toString() {
+        return "Symbol: " + symbol + ", Value: " + value;
+    }
+}
+
+public class CardCollection {
+    public static void main(String[] args) {
+        Collection<Card> cards = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        
+        cards.add(new Card("Hearts", "A"));
+        cards.add(new Card("Spades", "10"));
+        cards.add(new Card("Diamonds", "K"));
+        cards.add(new Card("Hearts", "7"));
+        
+        System.out.print("Enter symbol to search: ");
+        String searchSymbol = scanner.next();
+        
+        for (Card card : cards) {
+            if (card.symbol.equalsIgnoreCase(searchSymbol)) {
+                System.out.println(card);
+            }
+        }
+        scanner.close();
+    }
+}
+
+
+
+// 3. Ticket Booking System using Synchronized Threads & Priorities
+import java.util.*;
+
+class TicketBooking implements Runnable {
+    private static int availableSeats = 5;
+    private String passenger;
+
+    TicketBooking(String passenger) {
+        this.passenger = passenger;
+    }
+
+    @Override
+    public void run() {
+        synchronized (TicketBooking.class) {
+            if (availableSeats > 0) {
+                System.out.println(passenger + " booked a seat.");
+                availableSeats--;
+            } else {
+                System.out.println("No seats available for " + passenger);
+            }
+        }
+    }
+}
+
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        Thread vip1 = new Thread(new TicketBooking("VIP-1"));
+        Thread vip2 = new Thread(new TicketBooking("VIP-2"));
+        Thread normal1 = new Thread(new TicketBooking("Normal-1"));
+        Thread normal2 = new Thread(new TicketBooking("Normal-2"));
+
+        vip1.setPriority(Thread.MAX_PRIORITY);
+        vip2.setPriority(Thread.MAX_PRIORITY);
+        normal1.setPriority(Thread.MIN_PRIORITY);
+        normal2.setPriority(Thread.MIN_PRIORITY);
+
+        vip1.start();
+        vip2.start();
+        normal1.start();
+        normal2.start();
+    }
+}
